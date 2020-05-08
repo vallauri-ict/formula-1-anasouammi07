@@ -22,27 +22,22 @@ Microsoft SQL Server Management Studio 18 <br>
 
 Utility classes library
 
-### proj 1 - FormulaOneBatch
+### PROG 1 - FormulaOneBatch
 
 Simple Form with some CRUD actions on the DB tables<br>
 
-### proj 2 - FormulaOneDll
+### PROG 2 - FormulaOneDll
 
 An ASPX.NET page that shows DB tables
 
-### proj 3 - FormulaOneCrudForm
+### PROG 3 - FormulaOneCrudForm
 
 Web Api project
 
-### proj 4 - FormulaOneWebForm
+### PROG 4 - FormulaOneWebForm
 
 
-### proj 5 - FormulaOneWebApi
-
-
-
-
-
+### PROG 5 - FormulaOneWebApi
 
 
 A console project for the direct sql actions on database (create, insert, delete, setConstraints...)
