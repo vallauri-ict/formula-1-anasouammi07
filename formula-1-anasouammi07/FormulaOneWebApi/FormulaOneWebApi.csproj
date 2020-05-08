@@ -236,6 +236,7 @@
     <Compile Include="App_Start\FilterConfig2.cs" />
     <Compile Include="App_Start\RouteConfig2.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\CircuitsController.cs" />
     <Compile Include="Controllers\CountriesController.cs" />
     <Compile Include="Controllers\DriversController.cs" />
     <Compile Include="Controllers\TeamsController.cs" />

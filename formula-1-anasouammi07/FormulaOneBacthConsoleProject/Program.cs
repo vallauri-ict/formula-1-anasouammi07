@@ -23,13 +23,13 @@ namespace FormulaOneBacthConsoleProject
                 Console.Clear();
                 switch (scelta)
                 {
-                    case '1': CallExecuteSqlScript("CreateCountries"); break;
-                    case '2': CallExecuteSqlScript("CreateTeams"); break;
-                    case '3': CallExecuteSqlScript("CreateDrivers"); break;
-                    case '4': CallExecuteSqlScript("CreateCircuits"); break;
-                    case '5': CallExecuteSqlScript("CreateRaces"); break;
-                    case '6': CallExecuteSqlScript("CreateRacesScores"); break;
-                    case '7': CallExecuteSqlScript("CreateScores"); break;
+                    case '1': CallExecuteSqlScript("Countries"); break;
+                    case '2': CallExecuteSqlScript("Teams"); break;
+                    case '3': CallExecuteSqlScript("Drivers"); break;
+                    case '4': CallExecuteSqlScript("Circuits"); break;
+                    case '5': CallExecuteSqlScript("Races"); break;
+                    case '6': CallExecuteSqlScript("RacesScores"); break;
+                    case '7': CallExecuteSqlScript("Scores"); break;
                     case '0': CallExecuteSqlScript("SetConstraints"); break;
                     case 'A': CallExecuteSqlScript("DropCountries"); break;
                     case 'B': CallExecuteSqlScript("DropTeams"); break;

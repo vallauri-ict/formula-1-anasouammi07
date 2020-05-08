@@ -1,32 +1,42 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace FormulaOneDll
 {
+    [DataContract(Name = "Team")]
     public class Team
     {
-        #region Attributes
+        [DataMember(Name = "id")]
         private int id;
+        [DataMember(Name = "name")]
         private string name;
+        [DataMember(Name = "fullTeamName")]
         private string fullTeamName;
+        [DataMember(Name = "country")]
         private Country country;
+        [DataMember(Name = "powerUnit")]
         private string powerUnit;
+        [DataMember(Name = "technicalChief")]
         private string technicalChief;
+        [DataMember(Name = "chassis")]
         private string chassis;
+        [DataMember(Name = "firstDriver")]
         private Driver firstDriver;
+        [DataMember(Name = "secondDriver")]
         private Driver secondDriver;
-        #endregion
+        [DataMember(Name = "logo")]
+        private string logo;
+        [DataMember(Name = "img")]
+        private string img;
 
-        #region Constructors
-        public Team () { }
-
-        public Team(int id, string nome, string fullTeamName, Country country, string powerUnit, string technicalChief, string chassis, Driver firstDriver, Driver secondDriver)
+        public Team(int id, string name, string fullTeamName, Country country, string powerUnit, string technicalChief, string chassis, Driver firstDriver, Driver secondDriver, string logo, string img)
         {
-            this.ID = id;
-            this.Name = nome;
+            this.Id = id;
+            this.Name = name;
             this.FullTeamName = fullTeamName;
             this.Country = country;
             this.PowerUnit = powerUnit;
@@ -34,11 +44,11 @@ namespace FormulaOneDll
             this.Chassis = chassis;
             this.FirstDriver = firstDriver;
             this.SecondDriver = secondDriver;
+            this.Logo = logo;
+            this.Img = img;
         }
-        #endregion
 
-        #region Properties
-        public int ID { get => id; set => id = value; }
+        public int Id { get => id; set => id = value; }
         public string Name { get => name; set => name = value; }
         public string FullTeamName { get => fullTeamName; set => fullTeamName = value; }
         public Country Country { get => country; set => country = value; }
@@ -47,10 +57,12 @@ namespace FormulaOneDll
         public string Chassis { get => chassis; set => chassis = value; }
         public Driver FirstDriver { get => firstDriver; set => firstDriver = value; }
         public Driver SecondDriver { get => secondDriver; set => secondDriver = value; }
-        #endregion
+        public string Logo { get => logo; set => logo = value; }
+        public string Img { get => img; set => img = value; }
 
-        #region Methods
-        public override string ToString() => $"{this.Name} ({this.Country.CountryName})";
-        #endregion
+        public override string ToString()
+        {
+            return $"{this.Name} ({this.Country.CountryName})";
+        }
     }
 }

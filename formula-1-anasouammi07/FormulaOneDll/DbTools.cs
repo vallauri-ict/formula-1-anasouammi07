@@ -18,11 +18,12 @@ namespace FormulaOneDll
 {
     public class DbTools
     {
-        private const string WORKINGPATH = @"C:\Users\Amico Fritz\Desktop\formula-1-anasouammi07\Dati\";
-        private const string CONNECTION_STRING = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\Amico Fritz\Desktop\formula-1-anasouammi07\Dati\FormulaOne.mdf;Integrated Security=True";
+        private const string WORKINGPATH = @"C:\Users\Amico Fritz\Desktop\GITHUB\formula-1-anasouammi07\formula-1-anasouammi07\Dati\";
+        private const string CONNECTION_STRING = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\Amico Fritz\Desktop\GITHUB\formula-1-anasouammi07\formula-1-anasouammi07\Dati\FormulaOne.mdf;Integrated Security=True";
 
         private Dictionary<int, Driver> drivers;
         private Dictionary<string, Country> countries;
+        private Dictionary<int, Circuit> circuits;
         private List<Team> teams;
         public Dictionary<int, Team> teams2;
 
@@ -51,7 +52,7 @@ namespace FormulaOneDll
             get
             {
                 if (teams == null || teams.Count == 0)
-                    this.LoadTeams();
+                   this.teams = this.LoadTeams();
                 return teams;
             }
             set => teams = value;
@@ -92,7 +93,7 @@ namespace FormulaOneDll
 
         
 
-        public void GetCountries()
+        public Dictionary<string, Country> GetCountries()
         {
             if (this.countries == null)
             {
@@ -118,8 +119,9 @@ namespace FormulaOneDll
                 }
                 SqlConnection.ClearAllPools();
             }
+            return this.countries;
         }
-           public void GetTeams(bool forceReload = false)
+          /* public void GetTeams(bool forceReload = false)
         {
             if (forceReload || this.Teams == null)
             {
@@ -153,73 +155,111 @@ namespace FormulaOneDll
                     reader.Close();
                 }
             }
-        }
+        }*/
 
-        public void GetDrivers(bool forceReload = false)
+        public Dictionary<int, Circuit> GetCircuits(bool forceReload = false)
         {
-            this.GetCountries();
-            if (forceReload || this.drivers == null)
+            if (forceReload || circuits == null)
             {
-                this.Drivers = new Dictionary<int, Driver>();
+                circuits = new Dictionary<int, Circuit>();
                 var con = new SqlConnection(CONNECTION_STRING);
+
                 using (con)
                 {
+                    SqlCommand command = new SqlCommand("SELECT * FROM Circuits", con);
                     con.Open();
-                    var command = new SqlCommand("SELECT * FROM Drivers;", con);
+
                     SqlDataReader reader = command.ExecuteReader();
+
                     while (reader.Read())
                     {
-                        int driverIsoCode = reader.GetInt32(0);
-                        Driver d = new Driver(driverIsoCode)
-                        {
-                            Firstname = reader.GetString(1),
-                            Lastname = reader.GetString(2),
-                            Dob = reader.GetDateTime(3),
-                            PlaceOfBirthday = reader.GetString(4),
-                            Country = Countries[reader.GetString(5)]
-                        };
-                        this.Drivers.Add(driverIsoCode, d);
+                        Circuit c = new Circuit(
+                            reader.GetInt32(0),
+                            reader.GetString(1),
+                            reader.GetInt32(2),
+                            reader.GetInt32(3),
+                            GetCountries()[reader.GetString(4)],
+                            reader.GetString(5),
+                            reader.GetString(6));
+                        circuits.Add(c.Id, c);
                     }
-                    con.Close();
-                    con.Dispose();
                 }
-                SqlConnection.ClearAllPools();
             }
+            return circuits;
+        }
+        public Dictionary<int, Driver> GetDrivers(bool forceReload = false)
+        {
+            if (forceReload || drivers == null)
+            {
+                drivers = new Dictionary<int, Driver>();
+                var con = new SqlConnection(CONNECTION_STRING);
+
+                using (con)
+                {
+                    SqlCommand command = new SqlCommand("SELECT * FROM Drivers", con);
+                    con.Open();
+
+                    SqlDataReader reader = command.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        Driver d = new Driver(
+                            reader.GetInt32(0),
+                            reader.GetString(1),
+                            reader.GetString(2),
+                            reader.GetDateTime(3),
+                            reader.GetString(4),
+                            GetCountries()[reader.GetString(5)],
+                            reader.GetString(6),
+                            reader.GetString(7)
+                        );
+                        drivers.Add(d.Id, d);
+                    }
+                }
+            }
+            return drivers;
         }
 
-        public void LoadTeams()
+        public List<Team> LoadTeams()
         {
-            GetCountries();
-            GetDrivers(true);
-            teams = new List<Team>();
-            var con = new SqlConnection($@"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename={WORKINGPATH}FormulaOne.mdf;Integrated Security=True");
+           List<Team> retVal = new List<Team>();
+
+            var con = new SqlConnection(CONNECTION_STRING);
+
             using (con)
             {
+                SqlCommand command = new SqlCommand("SELECT * FROM Teams;", con);
                 con.Open();
-                var command = new SqlCommand("SELECT * FROM Teams;", con);
+
                 SqlDataReader reader = command.ExecuteReader();
+
                 while (reader.Read())
                 {
-                    Team t = new Team()
-                    {
-                        ID = reader.GetInt32(0),
-                        Name = reader.GetString(1),
-                        FullTeamName = reader.GetString(2),
-                        Country = this.Countries[reader.GetString(3)],
-                        PowerUnit = reader.GetString(4),
-                        TechnicalChief = reader.GetString(5),
-                        Chassis = reader.GetString(6),
-                        FirstDriver = this.Drivers[reader.GetInt32(7)],
-                        SecondDriver = this.Drivers[reader.GetInt32(8)]
-                    };
-                    teams.Add(t);
-                }
-                con.Close();
-                con.Dispose();
-            }
-            SqlConnection.ClearAllPools();
-        }
+                    string teamCountryCode = reader.GetString(3);
+                    // Country teamCountry = GetCountries().Find(item => item.CountryCode == teamCountryCode);
+                    Country teamCountry = GetCountries()[teamCountryCode];
+                    Driver firstDriver = GetDrivers()[reader.GetInt32(7)];
+                    Driver secondDriver = GetDrivers()[reader.GetInt32(8)];
 
+                    Team t = new Team(
+                        reader.GetInt32(0),
+                        reader.GetString(1),
+                        reader.GetString(2),
+                        teamCountry,
+                        reader.GetString(4),
+                        reader.GetString(5),
+                        reader.GetString(6),
+                        firstDriver,
+                        secondDriver,
+                        reader.GetString(9),
+                        reader.GetString(10)
+                    );
+                    retVal.Add(t);
+                }
+                reader.Close();
+            }
+            return retVal;
+        }
         public bool SerializeToJSON<T>(IEnumerable<T> list, string path)
         {
             try

@@ -1,109 +1,86 @@
-"use strict;"
+let app;
 
 $(function () {
-    $("#CaricaDrivers").on("click", function () {
-        richiesta("/Drivers", loadTable);
-    });
-
-    $("#CaricaTeams").on("click", function () {
-        richiesta("/Teams", loadTable);
-    });
-
-    $("#CaricaCountries").on("click", function () {
-        richiesta("/Countries", loadTable);
-    });
-
-    $("#CaricaDriver").on("click", function () {
-        let driverId = $("#txtDriver").val();
-        richiesta("/Drivers/" + driverId, loadElement);
-    });
-    $("#CaricaTeam").on("click", function () {
-        let teamId = $("#txtTeam").val();
-        richiesta("/Teams/" + teamId, loadElement);
-    });
-    $("#CaricaCountry").on("click", function () {
-        let countryId = $("#txtCountry").val();
-        richiesta("/Countries/" + countryId, loadElement);
+    app = new Vue({
+        el: "#div",
+        data: {
+            drivers: [],
+            teams: [],
+            circuits: [],
+            rows: [],
+            stringa: '',
+            idRicerca: '',
+            error: ''
+        },
+        methods: {
+            driversClick: getDrivers,
+            teamsClick: getTeams,
+            circuitsClick: getCircuits,
+            ricerca: ricercaElemento
+        }
     });
 });
 
-function richiesta(parameters, callbackFunction) {
-    let _richiesta = $.ajax({
-        url: "api" + parameters,
-        type: "GET",
-        data: "",
-        contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-        dataType: "json",
-        timeout: 5000,
-    });
-
-    _richiesta.done(callbackFunction);
-    _richiesta.fail(error);
+function getDrivers() {
+    clear();
+    app.stringa = 'drivers';
+    $.getJSON('/api/drivers').done(
+        function (data) {
+            console.log(data);
+            app.drivers = data;
+            app.rows = [];
+            for (let i = 0; i < app.drivers.length; i += 4) {
+                app.rows[i / 4] = app.drivers.slice(i, i + 4);
+            }
+        });
 }
 
-function loadTable(data) {
-    let tbl_body = "";
-    let tbl_head = "";
-    let odd_even = false;
-    let first = true;
-    $.each(data, function () {
-        let tbl_row = "";
-
-        $.each(this, function (k, v) {
-            if (first) {
-                tbl_head += "<th>" + k + "</th>";
+function getTeams() {
+    clear();
+    app.stringa = 'teams';
+    $.getJSON('/api/teams').done(
+        function (data) {
+            console.log(data);
+            app.teams = data;
+            app.rows = [];
+            for (let i = 0; i < app.teams.length; i += 4) {
+                app.rows[i / 4] = app.teams.slice(i, i + 4);
             }
-
-            if (({}).constructor === v.constructor) //check if json
-            {
-                for (var key in v) {
-                    if (v.hasOwnProperty(key)) {
-                        tbl_row += "<td>" + v[key] + "</td>";
-                        break;
-                    }
-                }
-            }
-            else
-                tbl_row += "<td>" + v + "</td>";
         });
-        first = false;
-        tbl_body += "<tr class=\"" + (odd_even ? "odd" : "even") + "\">" + tbl_row + "</tr>";
-        odd_even = !odd_even;
-    });
-    $("#table thead").html(tbl_head);
-    $("#table tbody").html(tbl_body);
-};
-function loadElement(data) {
-    console.log(data);
-    let tbl_body = "";
-    let tbl_head = "";
+}
 
-    $.each(data, function (k, v) {
-        tbl_head += "<th>" + k + "</th>";
-
-        if (({}).constructor === v.constructor) //check if json
-        {
-            for (var key in v) {
-                if (v.hasOwnProperty(key)) {
-                    tbl_body += "<td>" + v[key] + "</td>";
-                    break;
-                }
+function getCircuits() {
+    clear();
+    app.stringa = 'circuits';
+    $.getJSON('/api/circuits').done(
+        function (data) {
+            console.log(data);
+            app.circuits = data;
+            app.rows = [];
+            for (let i = 0; i < app.circuits.length; i += 3) {
+                app.rows[i / 3] = app.circuits.slice(i, i + 3);
             }
-        }
-        else
-            tbl_body += "<td>" + v + "</td>";
-    });
-    $("#table thead").html(tbl_head);
-    $("#table tbody").html(tbl_body);
-};
+        });
+}
 
-function error(jqXHR, testStatus, strError) {
-    $("#table thead").html("");
-    $("#table tbody").html("Impossibile trovare la risorsa richiesta, maggiori informazioni in console.");
-    if (jqXHR.status == 0)
-        console.log("server timeout");
-    else if (jqXHR.status == 200)
-        console.log("Formato dei dati non corretto : " + jqXHR.responseText);
-    else
-        console.log("Server Error: " + jqXHR.status + " - " + jqXHR.responseText);
-};
+function ricercaElemento() {
+    let elem;
+    app.error = '';
+
+    if (app.idRicerca == '') {
+        for (let i = 0; i < app[app.stringa].length; i += 3) {
+            app.rows[i / 3] = app[app.stringa].slice(i, i + 3);
+        }
+    } else {
+        elem = app[app.stringa].find(item => item.id == app.idRicerca);
+        if (elem == undefined)
+            app.error = app.stringa.substring(0, app.stringa.length - 1) + ' not found';
+        else
+            app.rows = [[elem]];
+    }
+}
+
+function clear() {
+    app.error = '';
+    app.idRicerca = '';
+}

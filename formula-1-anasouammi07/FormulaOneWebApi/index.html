@@ -4,29 +4,42 @@
     <meta charset="utf-8" />
     <title>Formula 1 Web Api</title>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <script src="index.js"></script>
+
 
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="index.js"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 
     <style>
-
-        body > div {
-            margin: 15px;
-            display: flex;
-            height: 78px;
+        body {
+            background-color: #CD4A4A;
         }
 
-            body > div:nth-of-type(1) input {
-                margin: auto;
-                padding: 15px;
+        .grid {
+            margin: 15px;
+            display: grid;
+            grid-template-columns:33.3% 33.3% 33.3%;
+            grid-column-gap:0.5%;
+        }
+
+            .grid button {
+                margin: 0 auto;
+                display: block;
+                text-align: center;
+                font-weight: bold;
+                /*height:20px;
+            padding: 15px;*/
             }
 
-            body > div div {
-                margin: auto;
-            }
+        input[type="text"] {
+            width: 100px;
+        }
+
+       .grid div {
+            margin: auto;
+        }
 
         table {
             border-collapse: collapse;
@@ -41,43 +54,91 @@
             }
 
         #CaricaDrivers {
-            width: 92px;
+            width: 170px;
         }
 
         #CaricaTeams {
-            width: 94px;
+            width: 170px;
         }
 
-        #CaricaCountries {
-            width: 94px;
+        #CaricaCircuits {
+            width: 170px;
         }
     </style>
 </head>
 <body>
-    <h1 style="text-align:center">Formula 1 Web Api </h1>
-    <h3 style="text-align:center">clicca per caricare la tabella</h3>
-    <div>
-        <input type="button" id="CaricaDrivers" value="Drivers" class="btn btn-light" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <input type="button" id="CaricaTeams" value="Teams"  class="btn btn-light"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" id="CaricaCountries" value="Countries" />
-    </div>
-    <div>
-        <div>
-            <label>Driver id:&nbsp;&nbsp;&nbsp; <input id="txtDriver" type="text" />&nbsp;&nbsp;&nbsp;&nbsp; </label>
-            &nbsp;<input type="button" value="Cerca pilota" id="CaricaDriver" class="btn btn-light" />
+    <div id="div">
+        <h1 style="text-align: center; color:white">Formula 1 Web Api </h1>
+        <h3 style="text-align:center; color:white">clicca per caricare la tabella</h3>
+        <div class="grid">
+            <button id="CaricaDrivers" v-on:click="driversClick()" class="btn btn-info">Drivers</button>
+            <button id="CaricaTeams" v-on:click="teamsClick()" class="btn btn-info">Teams</button>
+            <button id="CaricaCircuits" v-on:click="circuitsClick()" class="btn btn-info">Circuits</button>
         </div>
-        <div>
-            <label>Team id: <input id="txtTeam" type="text" /></label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <input type="button" value="Cerca team" id="CaricaTeam"  class="btn btn-light" />
+        <div class="grid">
+            <div>
+                <label style=" color:white; font-weight:bold">Driver id:&nbsp;&nbsp;&nbsp; <input id="txtDriver" type="text" /> </label>
+                &nbsp;<input type="button" value="Cerca pilota" id="CaricaDriver" class="btn btn-light" />
+            </div>
+            <div>
+                <label style="color:white; font-weight:bold">Team id: <input id="txtTeam" type="text" /></label>
+                <input type="button" value="Cerca team" id="CaricaTeam" class="btn btn-light" />
+            </div>
+            <div>
+                <label style="color:white; font-weight:bold">Circuit id: <input id="txtCircuit" type="text" /></label>
+                <input type="button" value="Cerca team" id="CaricaTeam" class="btn btn-light" />
+            </div>
+
         </div>
-        <div>
-            <label>Country id: <input id="txtCountry" type="text" /></label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <input type="button" value="Cerca Paese" id="CaricaCountry" class="btn btn-light" />
+
+        <div class="row" v-if="error!=''">
+            <div class="col-sm-12">
+                <h3 class="text-center" style="color: red"> {{ error }}</h3>
+            </div>
+        </div>
+        <!-- CARTE DEI PILOTI -->
+
+        <div class="row" v-for="(row, index) in rows" v-if="stringa=='drivers' && error==''">
+            <div class="col-sm-3" v-for="(driver) in row">
+                <div class="card" style="display: block; margin: 10px auto; width: 18rem;">
+                    <img class="card-img-top" v-bind:src="driver.img" alt="Card image cap">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ driver.firstname }} {{ driver.lastname }}</h5>
+                        <p class="card-text">{{ driver.description.substring(0, 150) }}...</p>
+                        <a href="https://www.formula1.com/en/drivers.html" class="btn btn-link" style="margin: 0 auto;">PILOTI F1</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CARTE DEI TEAMS-->
+        <div class="row" v-for="(row, index) in rows" v-if="stringa=='teams' && error==''">
+            <div class="col-sm-3" v-for="(team) in row">
+                <div class="card" style="display: block; margin: 10px auto; width: 18rem;">
+                    <img class="card-img-top" v-bind:src="team.img" alt="Card image cap" style="width: 286px; height: 136.5px">
+                    <div class="card-body">
+                        <h5 class="card-title"> {{ team.name }} </h5>
+                        <p class="card-text"> {{ team.fullTeamName }} </p>
+                        <a href="https://www.formula1.com/en/teams.html" class="btn btn-link" style="margin: 0 auto;">TEAMS F1</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- CARTE DEI CIRCUITI-->
+        <div class="row" v-for="(row, index) in rows" v-if="stringa=='circuits' && error==''">
+            <div class="col-sm-4" v-for="(circuit) in row">
+                <div class="card" style="display: block; margin: 10px auto; width: 18rem; height: 350px;">
+                    <img class="card-img-top" v-bind:src="circuit.img" alt="Card image cap">
+                    <div class="card-body">
+                        <h5 class="card-title"> {{ circuit.name }} </h5>
+                        <p class="card-text"> {{ circuit.country.countryName }} </p>
+                        <a href="#" class="btn btn-link" style="margin: 0 auto;">CIRCUITI F1</a>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
-    <table id="table">
-        <thead></thead>
-        <tbody></tbody>
-    </table>
+    
 </body>
 </html>
