@@ -18,24 +18,31 @@
 Visual Studio 2019 platform.<br>
 Microsoft SQL Server Management Studio 18 <br>
 
-## Proj
+## PROGETTO F1
 
-### proj 5 - FormulaOneWebApi
+Utility classes library
 
-Web Api project
-
-### proj 4 - FormulaOneWebForm
-
-An ASPX.NET page that shows DB tables
-
-### proj 3 - FormulaOneCrudForm
+### proj 1 - FormulaOneBatch
 
 Simple Form with some CRUD actions on the DB tables<br>
 
 ### proj 2 - FormulaOneDll
 
-Utility classes library
+An ASPX.NET page that shows DB tables
 
-### proj 1 - FormulaOneBatch
+### proj 3 - FormulaOneCrudForm
+
+Web Api project
+
+### proj 4 - FormulaOneWebForm
+
+
+### proj 5 - FormulaOneWebApi
+
+
+
+
+
+
 
 A console project for the direct sql actions on database (create, insert, delete, setConstraints...)
