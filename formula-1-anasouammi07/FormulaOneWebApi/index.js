@@ -10,13 +10,19 @@ $(function () {
             rows: [],
             stringa: '',
             idRicerca: '',
-            error: ''
+            error: '',
+            idDriver: '',
+            idTeam: '',
+            idCircuit:''
+
         },
         methods: {
             driversClick: getDrivers,
             teamsClick: getTeams,
             circuitsClick: getCircuits,
-            ricerca: ricercaElemento
+            findDriver: findDriver,
+            findTeam: findTeam,
+            findCircuit: findCircuit
         }
     });
 });
@@ -63,16 +69,48 @@ function getCircuits() {
         });
 }
 
-function ricercaElemento() {
+function findDriver() {
     let elem;
     app.error = '';
 
-    if (app.idRicerca == '') {
-        for (let i = 0; i < app[app.stringa].length; i += 3) {
-            app.rows[i / 3] = app[app.stringa].slice(i, i + 3);
+    if (app.idDriver == '') {
+        for (let i = 0; i < app.drivers.length; i += 4) {
+            app.rows[i / 4] = app.drivers.slice(i, i + 4);
         }
     } else {
-        elem = app[app.stringa].find(item => item.id == app.idRicerca);
+        elem = app.drivers.find(item => item.id == app.idDriver);
+        if (elem == undefined)
+            app.error = app.stringa.substring(0, app.stringa.length - 1) + ' not found';
+        else
+            app.rows = [[elem]];
+    }
+}
+function findTeam() {
+    let elem;
+    app.error = '';
+
+    if (app.idTeam == '') {
+        for (let i = 0; i < app.teams.length; i += 4) {
+            app.rows[i / 4] = app.teams.slice(i, i + 4);
+        }
+    } else {
+        elem = app.teams.find(item => item.id == app.idTeam);
+        if (elem == undefined)
+            app.error = app.stringa.substring(0, app.stringa.length - 1) + ' not found';
+        else
+            app.rows = [[elem]];
+    }
+}
+function findCircuit() {
+    let elem;
+    app.error = '';
+
+    if (app.idCircuit == '') {
+        for (let i = 0; i < app.circuits.length; i += 4) {
+            app.rows[i / 4] = app.circuits.slice(i, i + 4);
+        }
+    } else {
+        elem = app.circuits.find(item => item.id == app.idCircuit);
         if (elem == undefined)
             app.error = app.stringa.substring(0, app.stringa.length - 1) + ' not found';
         else
@@ -80,7 +118,10 @@ function ricercaElemento() {
     }
 }
 
+
 function clear() {
     app.error = '';
-    app.idRicerca = '';
+    app.idDriver = '';
+    app.idTeam = '';
+    app.idCircuit= '';
 }

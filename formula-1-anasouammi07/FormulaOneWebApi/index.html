@@ -15,6 +15,7 @@
     <style>
         body {
             background-color: #CD4A4A;
+            overflow-x:hidden;
         }
 
         .grid {
@@ -77,16 +78,16 @@
         </div>
         <div class="grid">
             <div>
-                <label style=" color:white; font-weight:bold">Driver id:&nbsp;&nbsp;&nbsp; <input id="txtDriver" type="text" /> </label>
-                &nbsp;<input type="button" value="Cerca pilota" id="CaricaDriver" class="btn btn-light" />
+                <label style=" color:white; font-weight:bold">Driver id:&nbsp;&nbsp;&nbsp; <input id="txtDriver" type="text" v-model="idDriver" /> </label>
+                &nbsp;<input type="button" value="Cerca pilota" id="CaricaDriver" @click="findDriver()" class="btn btn-light" />
             </div>
             <div>
-                <label style="color:white; font-weight:bold">Team id: <input id="txtTeam" type="text" /></label>
-                <input type="button" value="Cerca team" id="CaricaTeam" class="btn btn-light" />
+                <label style="color:white; font-weight:bold">Team id: <input id="txtTeam" type="text" v-model="idTeam"/></label>
+                <input type="button" value="Cerca team" id="CaricaTeam" @click="findTeam()"  class="btn btn-light" />
             </div>
             <div>
-                <label style="color:white; font-weight:bold">Circuit id: <input id="txtCircuit" type="text" /></label>
-                <input type="button" value="Cerca team" id="CaricaTeam" class="btn btn-light" />
+                <label style="color:white; font-weight:bold">Circuit id: <input id="txtCircuit" type="text" v-model="idCircuit"/></label>
+                <input type="button" value="Cerca team" id="CaricaTeam" @click="findCircuit()" class="btn btn-light" />
             </div>
 
         </div>
@@ -113,9 +114,9 @@
 
         <!-- CARTE DEI TEAMS-->
         <div class="row" v-for="(row, index) in rows" v-if="stringa=='teams' && error==''">
-            <div class="col-sm-3" v-for="(team) in row">
-                <div class="card" style="display: block; margin: 10px auto; width: 18rem;">
-                    <img class="card-img-top" v-bind:src="team.img" alt="Card image cap" style="width: 286px; height: 136.5px">
+            <div class="col-sm-3" style="padding:5px" v-for="(team) in row">
+                <div class="card" style="width:20vw; margin:0 auto">
+                    <img class="card-img-top" v-bind:src="team.img" alt="Card image cap" style="padding:10px">
                     <div class="card-body">
                         <h5 class="card-title"> {{ team.name }} </h5>
                         <p class="card-text"> {{ team.fullTeamName }} </p>
