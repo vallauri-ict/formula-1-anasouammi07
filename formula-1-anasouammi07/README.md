@@ -21,7 +21,7 @@ Microsoft SQL Server Management Studio 18 <br>
 ## PROGETTO F1
 
 ## DB DIAGRAM 
-![databasediagram](./Dati/databasediagram.png)
+![databasediagram](./assets/databasediagram.png)
 
 Utility classes library
 
