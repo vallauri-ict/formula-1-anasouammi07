@@ -20,6 +20,9 @@ Microsoft SQL Server Management Studio 18 <br>
 
 ## PROGETTO F1
 
+##DB DIAGRAM
+![databasediagram](C:\Users\Amico Fritz\Desktop\GITHUB\formula-1-anasouammi07\formula-1-anasouammi07\Dati\databasediagram.png)
+
 Utility classes library
 
 ### PROG 1 - FormulaOneBatch
