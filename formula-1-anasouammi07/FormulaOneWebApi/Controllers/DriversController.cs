@@ -10,16 +10,19 @@ using FormulaOneDll;
 
 namespace FormulaOneWebApi.Controllers
 {
-    [DataContract]
+    [RoutePrefix("api/drivers")]
     public class DriversController : ApiController
     {
         DbTools db = new DbTools();
        
+        [Route("list")]
         public IEnumerable<Driver> GetAllDrivers()
         {
             //db.GetDrivers();
             return db.Drivers.Values;
         }
+
+        [Route("{id:int}/details")]
         public IHttpActionResult GetDriver(int id)
         {
             db.GetDrivers();

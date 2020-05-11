@@ -8,14 +8,18 @@ using FormulaOneDll;
 
 namespace FormulaOneWebApi.Controllers
 {
+    [RoutePrefix("api/teams")]
     public class TeamsController : ApiController
     {
         DbTools db = new DbTools();
+
+        [Route("list")]
 
         public IEnumerable<Team> GetAllTeams()
         {
             return db.Teams;
         }
+        [Route("{id:int}/details")]
         public IHttpActionResult GetTeam(int id)
         {
             

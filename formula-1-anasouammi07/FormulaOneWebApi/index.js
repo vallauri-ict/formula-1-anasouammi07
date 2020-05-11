@@ -30,7 +30,7 @@ $(function () {
 function getDrivers() {
     clear();
     app.stringa = 'drivers';
-    $.getJSON('/api/drivers').done(
+    $.getJSON('/api/drivers/list').done(
         function (data) {
             console.log(data);
             app.drivers = data;
@@ -44,7 +44,7 @@ function getDrivers() {
 function getTeams() {
     clear();
     app.stringa = 'teams';
-    $.getJSON('/api/teams').done(
+    $.getJSON('/api/teams/list').done(
         function (data) {
             console.log(data);
             app.teams = data;
@@ -58,7 +58,7 @@ function getTeams() {
 function getCircuits() {
     clear();
     app.stringa = 'circuits';
-    $.getJSON('/api/circuits').done(
+    $.getJSON('/api/circuits/list').done(
         function (data) {
             console.log(data);
             app.circuits = data;
@@ -78,11 +78,16 @@ function findDriver() {
             app.rows[i / 4] = app.drivers.slice(i, i + 4);
         }
     } else {
-        elem = app.drivers.find(item => item.id == app.idDriver);
-        if (elem == undefined)
-            app.error = app.stringa.substring(0, app.stringa.length - 1) + ' not found';
-        else
-            app.rows = [[elem]];
+        $.getJSON('/api/drivers/' + app.idDriver +"/details").done(
+            function (data) {
+                console.log(data);
+                app.rows = [[data]];
+            }).fail(function (data)
+            {
+                if (data.status == 404)
+                    app.error = 'Pilota non trovato' //
+            });
+        
     }
 }
 function findTeam() {
@@ -94,11 +99,14 @@ function findTeam() {
             app.rows[i / 4] = app.teams.slice(i, i + 4);
         }
     } else {
-        elem = app.teams.find(item => item.id == app.idTeam);
-        if (elem == undefined)
-            app.error = app.stringa.substring(0, app.stringa.length - 1) + ' not found';
-        else
-            app.rows = [[elem]];
+        $.getJSON('/api/teams/' + app.idTeam + "/details").done(
+            function (data) {
+                console.log(data);
+                app.rows = [[data]];
+            }).fail(function (data) {
+                if (data.status == 404)
+                    app.error = 'Team non trovato' //
+            });
     }
 }
 function findCircuit() {
@@ -110,11 +118,14 @@ function findCircuit() {
             app.rows[i / 4] = app.circuits.slice(i, i + 4);
         }
     } else {
-        elem = app.circuits.find(item => item.id == app.idCircuit);
-        if (elem == undefined)
-            app.error = app.stringa.substring(0, app.stringa.length - 1) + ' not found';
-        else
-            app.rows = [[elem]];
+        $.getJSON('/api/circuits/' + app.idCircuit + "/details").done(
+            function (data) {
+                console.log(data);
+                app.rows = [[data]];
+            }).fail(function (data) {
+                if (data.status == 404)
+                    app.error = 'circuito non trovato' //
+            });;
     }
 }
 

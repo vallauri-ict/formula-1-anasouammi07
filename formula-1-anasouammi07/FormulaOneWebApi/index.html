@@ -70,6 +70,7 @@
 <body>
     <div id="div">
         <h1 style="text-align: center; color:white">Formula 1  </h1>
+
         <h3 style="text-align:center; color:white">clicca per visualizzare</h3>
         <div class="grid">
             <button id="CaricaDrivers" v-on:click="driversClick()" class="btn btn-info">Drivers</button>
@@ -82,12 +83,12 @@
                 &nbsp;<input type="button" value="Cerca pilota" id="CaricaDriver" @click="findDriver()" class="btn btn-light" />
             </div>
             <div>
-                <label style="color:white; font-weight:bold">Team id: <input id="txtTeam" type="text" v-model="idTeam"/></label>
-                <input type="button" value="Cerca team" id="CaricaTeam" @click="findTeam()"  class="btn btn-light" />
+                <label style="color:white; font-weight:bold">Team id: <input id="txtTeam" type="text" v-model="idTeam" /></label>
+                <input type="button" value="Cerca team" id="CaricaTeam" @click="findTeam()" class="btn btn-light" />
             </div>
             <div>
-                <label style="color:white; font-weight:bold">Circuit id: <input id="txtCircuit" type="text" v-model="idCircuit"/></label>
-                <input type="button" value="Cerca team" id="CaricaTeam" @click="findCircuit()" class="btn btn-light" />
+                <label style="color:white; font-weight:bold">Circuit id: <input id="txtCircuit" type="text" v-model="idCircuit" /></label>
+                <input type="button" value="Cerca circuito" id="CaricaTeam" @click="findCircuit()" class="btn btn-light" />
             </div>
 
         </div>
@@ -105,7 +106,7 @@
                     <img class="card-img-top" v-bind:src="driver.img" alt="Card image cap">
                     <div class="card-body">
                         <h5 class="card-title">{{ driver.firstname }} {{ driver.lastname }}</h5>
-                        <p class="card-text">{{ driver.description.substring(0, 150) }}...</p>
+                        <p class="card-text">{{ driver.description.substring(0, 100) }}...</p>
                         <a href="https://www.formula1.com/en/drivers.html" class="btn btn-link" style="margin: 0 auto;">PILOTI F1</a>
                     </div>
                 </div>

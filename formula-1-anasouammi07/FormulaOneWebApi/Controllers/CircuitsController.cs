@@ -8,16 +8,19 @@ using System.Web.Http;
 
 namespace FormulaOneWebApi.Controllers
 {
-   
+    [RoutePrefix("api/circuits")]
+
     public class CircuitsController : ApiController
     {
         DbTools db = new DbTools();
 
+        [Route("list")]
         public IEnumerable<Circuit> GetAllCircuits()
         {
             return db.GetCircuits().Values;
         }
 
+        [Route("{id:int}/details")]
         public IHttpActionResult GetCircuit(int id)
         {
             try
