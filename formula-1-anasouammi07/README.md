@@ -13,7 +13,7 @@
 - [JQuery](https://www.w3schools.com/jquery/default.asp)
 - [Bootstrap](https://getbootstrap.com/)
 - [SQL](https://www.w3schools.com/sql/default.asp)
-- [VUEjs] (https://vuejs.org/)
+- [VUEjs](https://vuejs.org/)
 
 Visual Studio 2019 platform.<br>
 Microsoft SQL Server Management Studio 18 <br>
@@ -21,7 +21,7 @@ Microsoft SQL Server Management Studio 18 <br>
 ## PROGETTO F1
 
 ## DB DIAGRAM 
-![databasediagram](./dati/databasediagram.png)
+![databasediagram](./Dati/databasediagram.png)
 
 Utility classes library
 
