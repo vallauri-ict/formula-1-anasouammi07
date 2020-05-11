@@ -13,7 +13,8 @@ $(function () {
             error: '',
             idDriver: '',
             idTeam: '',
-            idCircuit:''
+            idCircuit: '',
+            showArrow: true
 
         },
         methods: {
@@ -72,6 +73,7 @@ function getCircuits() {
 function findDriver() {
     let elem;
     app.error = '';
+   
 
     if (app.idDriver == '') {
         for (let i = 0; i < app.drivers.length; i += 4) {
@@ -135,5 +137,6 @@ function clear() {
     app.error = '';
     app.idDriver = '';
     app.idTeam = '';
-    app.idCircuit= '';
+    app.idCircuit = '';
+    app.showArrow = false;
 }

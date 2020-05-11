@@ -9,20 +9,23 @@
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script src="index.js"></script>
+
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="index.css" />
+    
 
     <style>
         body {
-            background-color: #CD4A4A;
-            overflow-x:hidden;
+            background-color: white;
+            overflow-x: hidden;
         }
 
         .grid {
             margin: 15px;
             display: grid;
-            grid-template-columns:33.3% 33.3% 33.3%;
-            grid-column-gap:0.5%;
+            grid-template-columns: 33.3% 33.3% 33.3%;
+            grid-column-gap: 0.5%;
         }
 
             .grid button {
@@ -38,7 +41,7 @@
             width: 100px;
         }
 
-       .grid div {
+        .grid div {
             margin: auto;
         }
 
@@ -69,7 +72,8 @@
 </head>
 <body>
     <div id="div">
-        <h1 style="text-align: center; color:white">Formula 1  </h1>
+        <!--<h1 style="text-align: center; color:white">Formula 1  </h1>-->
+        <img style="width:30%; display: block; margin: 0 auto" src="./assets/logo.png" />
 
         <h3 style="text-align:center; color:white">clicca per visualizzare</h3>
         <div class="grid">
@@ -92,12 +96,14 @@
             </div>
 
         </div>
+        <div class="arrows" v-if="showArrow"></div>
 
         <div class="row" v-if="error!=''">
             <div class="col-sm-12">
                 <h3 class="text-center" style="color: red"> {{ error }}</h3>
             </div>
         </div>
+        <h3 style="text-align:center">Clicca sui bottoni per visualizzare</h3>
         <!-- CARTE DEI PILOTI -->
 
         <div class="row" v-for="(row, index) in rows" v-if="stringa=='drivers' && error==''">
