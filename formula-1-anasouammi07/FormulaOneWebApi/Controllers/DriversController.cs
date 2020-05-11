@@ -10,7 +10,7 @@ using FormulaOneDll;
 
 namespace FormulaOneWebApi.Controllers
 {
-    [RoutePrefix("api/drivers")]
+    [RoutePrefix("api/drivers")]// indica a quale api rispondere
     public class DriversController : ApiController
     {
         DbTools db = new DbTools();

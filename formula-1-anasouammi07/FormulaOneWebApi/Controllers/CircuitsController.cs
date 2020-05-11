@@ -8,13 +8,13 @@ using System.Web.Http;
 
 namespace FormulaOneWebApi.Controllers
 {
-    [RoutePrefix("api/circuits")]
+    [RoutePrefix("api/circuits")] // indica a quale api rispondere
 
     public class CircuitsController : ApiController
     {
         DbTools db = new DbTools();
 
-        [Route("list")]
+        [Route("list")] 
         public IEnumerable<Circuit> GetAllCircuits()
         {
             return db.GetCircuits().Values;

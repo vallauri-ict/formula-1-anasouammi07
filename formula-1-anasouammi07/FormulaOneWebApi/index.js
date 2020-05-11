@@ -78,7 +78,7 @@ function findDriver() {
             app.rows[i / 4] = app.drivers.slice(i, i + 4);
         }
     } else {
-        $.getJSON('/api/drivers/' + app.idDriver +"/details").done(
+        $.getJSON('/api/drivers/' + app.idDriver + "/details").done( //richiesta dei dettagli del driver richiesto
             function (data) {
                 console.log(data);
                 app.rows = [[data]];
@@ -99,7 +99,7 @@ function findTeam() {
             app.rows[i / 4] = app.teams.slice(i, i + 4);
         }
     } else {
-        $.getJSON('/api/teams/' + app.idTeam + "/details").done(
+        $.getJSON('/api/teams/' + app.idTeam + "/details").done( //richiesta dei dettagli del team richiesto
             function (data) {
                 console.log(data);
                 app.rows = [[data]];
@@ -118,7 +118,7 @@ function findCircuit() {
             app.rows[i / 4] = app.circuits.slice(i, i + 4);
         }
     } else {
-        $.getJSON('/api/circuits/' + app.idCircuit + "/details").done(
+        $.getJSON('/api/circuits/' + app.idCircuit + "/details").done( //richiesta dei dettagli del cirucito richiesto
             function (data) {
                 console.log(data);
                 app.rows = [[data]];
@@ -131,6 +131,7 @@ function findCircuit() {
 
 
 function clear() {
+    app.rows = [];
     app.error = '';
     app.idDriver = '';
     app.idTeam = '';
