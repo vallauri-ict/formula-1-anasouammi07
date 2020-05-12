@@ -10,12 +10,15 @@ $(function () {
             rows: [],
             stringa: '',
             idRicerca: '',
+            driver: null,
+            team:null,
             error: '',
             idDriver: '',
             idTeam: '',
             idCircuit: '',
-            showArrow: true
-
+            showArrow: true,
+            viewDetails: false
+   
         },
         methods: {
             driversClick: getDrivers,
@@ -23,13 +26,32 @@ $(function () {
             circuitsClick: getCircuits,
             findDriver: findDriver,
             findTeam: findTeam,
-            findCircuit: findCircuit
+            findCircuit: findCircuit,
+            imgClick: imgClick,
+            viewDetailsDriver: function (driver) {
+                //console.log(driver);
+                $.getJSON('/api/drivers/' + driver.id + '/details').done((data)=> {
+                    console.log(data);
+                    this.driver = data;
+                    this.viewDetails = true;
+                })
+              },
+            viewDetailsTeam: function (team) {
+                //console.log(team);
+                $.getJSON('/api/teams/' + team.id + '/details').done((data) => {
+                    console.log(data);
+                    this.team = data;
+                    this.viewDetails = true;
+                })
+            },
+
         }
     });
 });
 
 function getDrivers() {
     clear();
+    app.viewDetails = false;
     app.stringa = 'drivers';
     $.getJSON('/api/drivers/list').done(
         function (data) {
@@ -44,6 +66,7 @@ function getDrivers() {
 
 function getTeams() {
     clear();
+    app.viewDetails = false;
     app.stringa = 'teams';
     $.getJSON('/api/teams/list').done(
         function (data) {
@@ -55,9 +78,12 @@ function getTeams() {
             }
         });
 }
-
+function imgClick() {
+    window.location.reload();
+}
 function getCircuits() {
     clear();
+    app.viewDetails = false;
     app.stringa = 'circuits';
     $.getJSON('/api/circuits/list').done(
         function (data) {
@@ -73,8 +99,8 @@ function getCircuits() {
 function findDriver() {
     let elem;
     app.error = '';
-   
-
+    app.viewDetails = false;
+    app.stringa = "drivers";
     if (app.idDriver == '') {
         for (let i = 0; i < app.drivers.length; i += 4) {
             app.rows[i / 4] = app.drivers.slice(i, i + 4);
@@ -95,7 +121,8 @@ function findDriver() {
 function findTeam() {
     let elem;
     app.error = '';
-
+    app.stringa = "teams";
+    app.viewDetails = false;
     if (app.idTeam == '') {
         for (let i = 0; i < app.teams.length; i += 4) {
             app.rows[i / 4] = app.teams.slice(i, i + 4);
@@ -113,8 +140,9 @@ function findTeam() {
 }
 function findCircuit() {
     let elem;
+    app.viewDetails = false;
     app.error = '';
-
+    app.stringa = "circuits";
     if (app.idCircuit == '') {
         for (let i = 0; i < app.circuits.length; i += 4) {
             app.rows[i / 4] = app.circuits.slice(i, i + 4);

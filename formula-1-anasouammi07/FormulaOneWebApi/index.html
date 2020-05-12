@@ -17,7 +17,7 @@
 
     <style>
         body {
-            background-color: white;
+            background-color: #CE4848;
             overflow-x: hidden;
         }
 
@@ -73,7 +73,7 @@
 <body>
     <div id="div">
         <!--<h1 style="text-align: center; color:white">Formula 1  </h1>-->
-        <img style="width:30%; display: block; margin: 0 auto" src="./assets/logo.png" />
+        <img style="width:30%; display: block; margin: 0 auto" src="./assets/logo.png" v-on:click="imgClick()" />
 
         <h3 style="text-align:center; color:white">clicca per visualizzare</h3>
         <div class="grid">
@@ -103,33 +103,181 @@
                 <h3 class="text-center" style="color: red"> {{ error }}</h3>
             </div>
         </div>
-        <h3 style="text-align:center">Clicca sui bottoni per visualizzare</h3>
         <!-- CARTE DEI PILOTI -->
 
-        <div class="row" v-for="(row, index) in rows" v-if="stringa=='drivers' && error==''">
+        <div class="row" v-for="(row, index) in rows" v-if="stringa=='drivers' && error=='' && !viewDetails">
             <div class="col-sm-3" v-for="(driver) in row">
                 <div class="card" style="display: block; margin: 10px auto; width: 18rem;">
                     <img class="card-img-top" v-bind:src="driver.img" alt="Card image cap">
                     <div class="card-body">
                         <h5 class="card-title">{{ driver.firstname }} {{ driver.lastname }}</h5>
-                        <p class="card-text">{{ driver.description.substring(0, 100) }}...</p>
-                        <a href="https://www.formula1.com/en/drivers.html" class="btn btn-link" style="margin: 0 auto;">PILOTI F1</a>
+                        <p class="card-text">{{ driver.description.substring(0, 150) }}...</p>
+                        <a class="btn btn-link" @click="viewDetailsDriver(driver)" style="margin: 0 auto;">INFORMAZIONI</a>
                     </div>
                 </div>
             </div>
         </div>
+        <div class="row" v-if="stringa=='drivers' && error=='' && viewDetails">
+            <div class="col-sm-6">
+                <div class="card" style="display: block;  width: 35rem; float:right">
+                    <img class="card-img-top" :src="driver.img" alt="Card image cap">
+                    <div class="card-body">
+                    </div>
+                </div>
+                <button id="Esci" style=" display:block; font-weight:bold; width: 170px; margin-top:650px; margin-left:580px;" @click="viewDetails=false" class="btn btn-info">Esci</button>
 
-        <!-- CARTE DEI TEAMS-->
-        <div class="row" v-for="(row, index) in rows" v-if="stringa=='teams' && error==''">
+            </div>
+            <div class="col-sm-6">
+                <table class="table" style="width:40%; height:70%; ">
+                    <tbody>
+
+                        <tr class="table-light">
+                            <th scope="row" class="stat-key">
+
+                                <span class="text">First Name</span>
+
+                            </th>
+                            <td class="stat-value">{{ driver.firstname }}</td>
+
+                        </tr>
+
+                        <tr class="table-light">
+                            <th scope="row" class="stat-key">
+
+                                <span class="text">Last Name</span>
+
+                            </th>
+                            <td class="stat-value">{{ driver.lastname }}</td>
+
+                        </tr>
+
+                        <tr class="table-light">
+                            <th scope="row" class="stat-key">
+
+                                <span class="text">Date of birth</span>
+
+                            </th>
+                            <td class="stat-value">{{ driver.dob }}</td>
+
+                        </tr>
+
+
+
+                        <tr class="table-light">
+                            <th scope="row" class="stat-key">
+
+                                <span class="text">Place of birth</span>
+
+                            </th>
+                            <td class="stat-value">{{ driver.placeOfBirth}}</td>
+
+                        </tr>
+                        <tr class="table-light">
+                            <th scope="row" class="stat-key">
+
+                                <span class="text">Country</span>
+
+                            </th>
+                            <td class="stat-value">{{ driver.country.CountryName }}</td>
+
+                        </tr>
+                        <tr class="table-light">
+                            <th scope="row" class="stat-key">
+
+                                <span class="text">Dettagli</span>
+
+                            </th>
+                            <td class="stat-value"><a :href="'https:///en.wikipedia.org/wiki/' + driver.firstname+ '_' + driver.lastname">Altre informazioni</a></td>
+
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+
+         <!-- CARTE DEI TEAMS-->
+        <div class="row" v-for="(row, index) in rows" v-if="stringa=='teams' && error=='' && !viewDetails">
             <div class="col-sm-3" style="padding:5px" v-for="(team) in row">
                 <div class="card" style="width:20vw; margin:0 auto">
                     <img class="card-img-top" v-bind:src="team.img" alt="Card image cap" style="padding:10px">
                     <div class="card-body">
                         <h5 class="card-title"> {{ team.name }} </h5>
                         <p class="card-text"> {{ team.fullTeamName }} </p>
-                        <a href="https://www.formula1.com/en/teams.html" class="btn btn-link" style="margin: 0 auto;">TEAMS F1</a>
+                        <a @click="viewDetailsTeam(team)" class="btn btn-link" style="margin: 0 auto;">Informazioni</a>
                     </div>
                 </div>
+            </div>
+        </div>
+        <div class="row" v-if="stringa=='teams' && error=='' && viewDetails">
+            <div class="col-sm-6">
+                <div class="card" style="display: block;  width: 35rem; float:right">
+                    <img class="card-img-top" :src="team.logo" alt="Card image cap">
+                    <div class="card-body">
+                    </div>
+                </div>
+                <button id="Esci" style=" display:block; font-weight:bold; width: 170px; margin-top:380px; margin-left:580px;" @click="viewDetails=false" class="btn btn-info">Esci</button>
+
+            </div>
+            <div class="col-sm-6">
+                <table class="table" style="width:40%; height:70%; ">
+                    <tbody>
+
+                        <tr class="table-light">
+                            <th scope="row" class="stat-key">
+
+                                <span class="text">name</span>
+
+                            </th>
+                            <td class="stat-value">{{ team.name}}</td>
+
+                        </tr>
+
+                        <tr class="table-light">
+                            <th scope="row" class="stat-key">
+
+                                <span class="text">full Team Name</span>
+
+                            </th>
+                            <td class="stat-value">{{ team.fullTeamName }}</td>
+
+                        </tr>
+
+                        <tr class="table-light">
+                            <th scope="row" class="stat-key">
+
+                                <span class="text">power Unit</span>
+
+                            </th>
+                            <td class="stat-value">{{ team.powerUnit }}</td>
+
+                        </tr>
+
+
+
+                        <tr class="table-light">
+                            <th scope="row" class="stat-key">
+
+                                <span class="text">Technical Chief</span>
+
+                            </th>
+                            <td class="stat-value">{{ team.technicalChief}}</td>
+
+                        </tr>
+                       
+                        <tr class="table-light">
+                            <th scope="row" class="stat-key">
+
+                                <span class="text">Dettagli</span>
+
+                            </th>
+                            <td class="stat-value"><a >Altre informazioni</a></td>
+
+                        </tr>
+
+                    </tbody>
+                </table>
             </div>
         </div>
         <!-- CARTE DEI CIRCUITI-->
