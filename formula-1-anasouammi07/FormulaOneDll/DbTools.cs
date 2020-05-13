@@ -207,7 +207,7 @@ namespace FormulaOneDll
                             reader.GetInt32(0),
                             reader.GetString(1),
                             reader.GetString(2),
-                            reader.GetDateTime(3),
+                            reader.GetDateTime(3).ToShortDateString(),
                             reader.GetString(4),
                             GetCountries()[reader.GetString(5)],
                             reader.GetString(6),

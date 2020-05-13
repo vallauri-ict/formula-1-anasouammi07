@@ -17,7 +17,7 @@ $(function () {
             idTeam: '',
             idCircuit: '',
             showArrow: true,
-            viewDetails: false
+            viewDetails: false  //variabile che ti serve per visualizzare o meno i dettagli
    
         },
         methods: {
@@ -78,9 +78,6 @@ function getTeams() {
             }
         });
 }
-function imgClick() {
-    window.location.reload();
-}
 function getCircuits() {
     clear();
     app.viewDetails = false;
@@ -94,6 +91,10 @@ function getCircuits() {
                 app.rows[i / 3] = app.circuits.slice(i, i + 3);
             }
         });
+}
+
+function imgClick() {
+    window.location.reload();
 }
 
 function findDriver() {
